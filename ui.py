@@ -35,12 +35,8 @@ class Header(GridLayout):
 		self.cols = 3
 		#Space for a logo?
 		self.add_widget(Label(text="", size_hint_x=None, height=100))
-		self.add_widget(Button(text="Toggle Console", on_press=self.toggleConsole))
-		self.add_widget(Button(text="Toggle Mode", on_press=self.toggleMode))
-	def toggleMode():
-		mode ^= 1
-	def toggleConsole():
-		mode ^= 2
+		self.add_widget(Button(text="Toggle Console"))
+		self.add_widget(Button(text="Toggle Mode" ))
 
 #When console mode is active, have this be the body
 class Body_Console(GridLayout):
