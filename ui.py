@@ -6,6 +6,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
+from kivy.uix.screenmanager import ScreenManager, Screen
 
 # Modes
 # 0: Editor no console
@@ -13,20 +14,24 @@ from kivy.uix.textinput import TextInput
 # 2: Editor with console
 # 3: Preview with console
 mode = 0
+global global_app
 
 #This view is always on
-class Basic(GridLayout):
+class EditorPage(GridLayout):
 	def __init__(self, **kwargs):
-		super(Basic, self).__init__(**kwargs)
+		super(EditorPage, self).__init__(**kwargs)
 		self.cols = 0
 		self.rows = 2
 		self.add_widget(Header(size_hint_y=None, height=50))
-		if (mode == 2 or mode == 3):
-			self.add_widget(Body_Console())
-		elif mode == 1:
-			self.add_widget(Preview())
-		else:
-			self.add_widget(Editor())
+		self.add_widget(Editor())
+
+class PreviewPage(GridLayout):
+	def __init__(self, **kwargs):
+		super(PreviewPage, self).__init__(**kwargs)
+		self.cols = 0
+		self.rows = 2
+		self.add_widget(Header(size_hint_y=None, height=50))
+		self.add_widget(Preview())
 
 #Toggling settings and views
 class Header(GridLayout):
@@ -36,7 +41,18 @@ class Header(GridLayout):
 		#Space for a logo?
 		self.add_widget(Label(text="", size_hint_x=None, height=100))
 		self.add_widget(Button(text="Toggle Console"))
-		self.add_widget(Button(text="Toggle Mode" ))
+
+		#Define mode toggle button
+		self.toggle_mode_btn = Button(text="Toggle Mode" )
+		self.toggle_mode_btn.bind(on_press=self.toggle_mode)
+		self.add_widget(self.toggle_mode_btn)
+	def toggle_mode(self, instance):
+		if global_app.screen_manager.current == "Editor":
+			global_app.screen_manager.transition.direction = "left"
+			global_app.screen_manager.current = "Preview"
+		else:
+			global_app.screen_manager.transition.direction = "right"
+			global_app.screen_manager.current = "Editor"
 
 #When console mode is active, have this be the body
 class Body_Console(GridLayout):
@@ -96,7 +112,21 @@ class Preview(GridLayout):
 
 class MyApp(App):
 	def build(self):
-		return Basic()
+		self.screen_manager = ScreenManager()
+		
+		self.editor_page = EditorPage()
+		screen = Screen(name="Editor")
+		screen.add_widget(self.editor_page)
+		self.screen_manager.add_widget(screen)
+
+		self.preview_page = PreviewPage()
+		screen = Screen(name="Preview")
+		screen.add_widget(self.preview_page)
+		self.screen_manager.add_widget(screen)
+
+		return self.screen_manager
 
 if __name__ == '__main__':
-	MyApp().run()
+	global global_app 
+	global_app = MyApp()
+	global_app.run()
