@@ -40,7 +40,7 @@ class Header(GridLayout):
 		#Space for a logo?
 		self.add_widget(Label(text="", size_hint_x=None, height=100))
 		self.add_widget(Button(text="Toggle Console", on_press=self.toggleConsole))
- 		self.add_widget(Button(text="Toggle Mode", on_press=self.toggleMode))
+		self.add_widget(Button(text="Toggle Mode", on_press=self.toggleMode))
  	def toggleMode(instance, value):
 		global mode
  		mode ^= 1
