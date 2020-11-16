@@ -72,14 +72,13 @@ class Tabs(GridLayout):
 	def __init__(self, **kwargs):
 		super(Tabs, self).__init__(**kwargs)
 		self.cols = 4
-		self.add_widget(Button(text="Safari", value=0, on_press=self.onChange))
-		self.add_widget(Button(text="Chrome", value=1, on_press=self.onChange))
-		self.add_widget(Button(text="Firefox", value=2, on_press=self.onChange))
-		self.add_widget(Button(text="Opera", value=3, on_press=self.onChange))
+		self.add_widget(Button(text="1-Safari", value=0, on_press=self.onChange))
+		self.add_widget(Button(text="2-Chrome", value=1, on_press=self.onChange))
+		self.add_widget(Button(text="3-Firefox", value=2, on_press=self.onChange))
+		self.add_widget(Button(text="4-Opera", value=3, on_press=self.onChange))
 	def onChange(instance, value):
-		print(instance, value)
 		global current_browser
-		current_browser = value
+		current_browser = int(value.text[0])-1
 
 #Editor View
 class Editor(GridLayout):
