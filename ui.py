@@ -4,6 +4,7 @@ kivy.require('1.8.0')
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.button import Button
+from kivy.uix.image import Image
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 
@@ -12,7 +13,10 @@ from kivy.uix.textinput import TextInput
 # 1: Preview no console
 # 2: Editor with console
 # 3: Preview with console
-mode = 0
+mode = 3
+
+browsers = ["Safari", "Chrome", "Firefox", "Opera"]
+current_browser = 0
 
 #This view is always on
 class Basic(GridLayout):
@@ -35,8 +39,14 @@ class Header(GridLayout):
 		self.cols = 3
 		#Space for a logo?
 		self.add_widget(Label(text="", size_hint_x=None, height=100))
-		self.add_widget(Button(text="Toggle Console"))
-		self.add_widget(Button(text="Toggle Mode" ))
+		self.add_widget(Button(text="Toggle Console", on_press=self.toggleConsole))
+ 		self.add_widget(Button(text="Toggle Mode", on_press=self.toggleMode))
+ 	def toggleMode(instance, value):
+		global mode
+ 		mode ^= 1
+ 	def toggleConsole(instance, value):
+		global mode
+ 		mode ^= 2
 
 #When console mode is active, have this be the body
 class Body_Console(GridLayout):
@@ -62,10 +72,13 @@ class Tabs(GridLayout):
 	def __init__(self, **kwargs):
 		super(Tabs, self).__init__(**kwargs)
 		self.cols = 4
-		self.add_widget(Button(text="Safari"))
-		self.add_widget(Button(text="Chrome"))
-		self.add_widget(Button(text="Firefox"))
-		self.add_widget(Button(text="Opra"))
+		self.add_widget(Button(text="1-Safari", value=0, on_press=self.onChange))
+		self.add_widget(Button(text="2-Chrome", value=1, on_press=self.onChange))
+		self.add_widget(Button(text="3-Firefox", value=2, on_press=self.onChange))
+		self.add_widget(Button(text="4-Opera", value=3, on_press=self.onChange))
+	def onChange(instance, value):
+		global current_browser
+		current_browser = int(value.text[0])-1
 
 #Editor View
 class Editor(GridLayout):
@@ -81,7 +94,7 @@ class Preview_One(GridLayout):
 		super(Preview_One, self).__init__(**kwargs)
 		self.rows = 2
 		self.add_widget(Tabs(size_hint_y=None, height=50))
-		self.add_widget(Label(text="Preview"))
+		self.add_widget(Image(source="screenshots/" + browsers[current_browser] +".png", keep_ratio=False, allow_stretch=True))
 
 #Preview View
 class Preview(GridLayout):
@@ -89,10 +102,10 @@ class Preview(GridLayout):
 		super(Preview, self).__init__(**kwargs)
 		self.rows = 2
 		self.cols = 2
-		self.add_widget(Label(text="Safari"))
-		self.add_widget(Label(text="Chrome"))
-		self.add_widget(Label(text="Firefox"))
-		self.add_widget(Label(text="Opra"))
+		self.add_widget(Image(source="screenshots/Safari.png", keep_ratio=False, allow_stretch=True))
+		self.add_widget(Image(source="screenshots/Chrome.png", keep_ratio=False, allow_stretch=True))
+		self.add_widget(Image(source="screenshots/Firefox.png", keep_ratio=False, allow_stretch=True))
+		self.add_widget(Image(source="screenshots/Opera.png", keep_ratio=False, allow_stretch=True))
 
 class MyApp(App):
 	def build(self):
