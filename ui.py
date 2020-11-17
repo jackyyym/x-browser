@@ -9,6 +9,9 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.config import Config
+
+Config.set('graphics', 'resizable', True) 
 
 # Modes
 # 0: Editor no console
@@ -37,6 +40,14 @@ class PreviewPage(GridLayout):
 		self.rows = 2
 		self.add_widget(Header(size_hint_y=None, height=50))
 		self.add_widget(Preview())
+
+class HomePage(GridLayout):
+	def __init__(self, **kwargs):
+		super(HomePage, self).__init__(**kwargs)
+		self.cols = 0
+		self.rows = 2
+		self.add_widget(Label(text="LOGO", size_hint_x=.1, height=100))
+		self.add_widget(Home(size_hint_y =None, height=500))
 
 #Toggling settings and views
 class Header(GridLayout):
@@ -93,6 +104,19 @@ class Tabs(GridLayout):
 		global current_browser
 		current_browser = int(value.text[0])-1
 
+#Launch/Home View
+class Home(GridLayout):
+	def __init__(self, **kwargs):
+		super(Home, self).__init__(**kwargs)
+		self.cols = 2
+		self.add_widget(Button(text="Open New File", font_size = "30sp", on_press=self.onChange))
+		self.add_widget(Button(text="Upload a File", font_size = "30sp", on_press=self.errorMsg))
+	def onChange(instance, value):
+		global mode
+		mode ^= 1 
+		global_app.screen_manager.current = "Editor"
+	def errorMsg(self, event):
+		print("This mode is not currently available")
 #Editor View
 class Editor(GridLayout):
 	def __init__(self, **kwargs):
@@ -119,6 +143,11 @@ class Preview(GridLayout):
 class MyApp(App):
 	def build(self):
 		self.screen_manager = ScreenManager()
+
+		self.home_page = HomePage()
+		screen = Screen(name="Home")
+		screen.add_widget(self.home_page)
+		self.screen_manager.add_widget(screen)
 		
 		self.editor_page = EditorPage()
 		screen = Screen(name="Editor")
