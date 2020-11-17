@@ -8,6 +8,7 @@ from kivy.uix.image import Image
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.tabbedpanel import TabbedPanel
+from kivy.uix.screenmanager import ScreenManager, Screen
 
 # Modes
 # 0: Editor no console
@@ -15,23 +16,27 @@ from kivy.uix.tabbedpanel import TabbedPanel
 # 2: Editor with console
 # 3: Preview with console
 mode = 0
+global global_app
 
 browsers = ["Safari", "Chrome", "Firefox", "Opera"]
 current_browser = 0
 
 #This view is always on
-class Basic(GridLayout):
+class EditorPage(GridLayout):
 	def __init__(self, **kwargs):
-		super(Basic, self).__init__(**kwargs)
+		super(EditorPage, self).__init__(**kwargs)
 		self.cols = 0
 		self.rows = 2
 		self.add_widget(Header(size_hint_y=None, height=50))
-		if (mode == 2 or mode == 3):
-			self.add_widget(Body_Console())
-		elif mode == 1:
-			self.add_widget(Preview())
-		else:
-			self.add_widget(Editor())
+		self.add_widget(Editor())
+
+class PreviewPage(GridLayout):
+	def __init__(self, **kwargs):
+		super(PreviewPage, self).__init__(**kwargs)
+		self.cols = 0
+		self.rows = 2
+		self.add_widget(Header(size_hint_y=None, height=50))
+		self.add_widget(Preview())
 
 #Toggling settings and views
 class Header(GridLayout):
@@ -40,14 +45,21 @@ class Header(GridLayout):
 		self.cols = 3
 		#Space for a logo?
 		self.add_widget(Label(text="LOGO", size_hint_x=.25, height=100))
+		
 		self.add_widget(Button(text="Toggle Console", on_press=self.toggleConsole))
 		self.add_widget(Button(text="Toggle Mode", on_press=self.toggleMode))
-	def toggleMode(instance, value):
-		global mode
-		mode ^= 1
 	def toggleConsole(instance, value):
 		global mode
 		mode ^= 2
+	def toggleMode(instance, value):
+		global mode
+		mode ^= 1
+		if global_app.screen_manager.current == "Editor":
+			global_app.screen_manager.transition.direction = "left"
+			global_app.screen_manager.current = "Preview"
+		else:
+			global_app.screen_manager.transition.direction = "right"
+			global_app.screen_manager.current = "Editor"
 
 #When console mode is active, have this be the body
 class Body_Console(GridLayout):
@@ -106,7 +118,21 @@ class Preview(GridLayout):
 
 class MyApp(App):
 	def build(self):
-		return Basic()
+		self.screen_manager = ScreenManager()
+		
+		self.editor_page = EditorPage()
+		screen = Screen(name="Editor")
+		screen.add_widget(self.editor_page)
+		self.screen_manager.add_widget(screen)
+
+		self.preview_page = PreviewPage()
+		screen = Screen(name="Preview")
+		screen.add_widget(self.preview_page)
+		self.screen_manager.add_widget(screen)
+
+		return self.screen_manager
 
 if __name__ == '__main__':
-	MyApp().run()
+	global global_app 
+	global_app = MyApp()
+	global_app.run()
