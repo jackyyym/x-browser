@@ -7,13 +7,14 @@ from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
+from kivy.uix.tabbedpanel import TabbedPanel
 
 # Modes
 # 0: Editor no console
 # 1: Preview no console
 # 2: Editor with console
 # 3: Preview with console
-mode = 3
+mode = 0
 
 browsers = ["Safari", "Chrome", "Firefox", "Opera"]
 current_browser = 0
@@ -38,15 +39,15 @@ class Header(GridLayout):
 		super(Header, self).__init__(**kwargs)
 		self.cols = 3
 		#Space for a logo?
-		self.add_widget(Label(text="", size_hint_x=None, height=100))
+		self.add_widget(Label(text="LOGO", size_hint_x=.25, height=100))
 		self.add_widget(Button(text="Toggle Console", on_press=self.toggleConsole))
 		self.add_widget(Button(text="Toggle Mode", on_press=self.toggleMode))
- 	def toggleMode(instance, value):
+	def toggleMode(instance, value):
 		global mode
- 		mode ^= 1
- 	def toggleConsole(instance, value):
+		mode ^= 1
+	def toggleConsole(instance, value):
 		global mode
- 		mode ^= 2
+		mode ^= 2
 
 #When console mode is active, have this be the body
 class Body_Console(GridLayout):
@@ -72,10 +73,10 @@ class Tabs(GridLayout):
 	def __init__(self, **kwargs):
 		super(Tabs, self).__init__(**kwargs)
 		self.cols = 4
-		self.add_widget(Button(text="1-Safari", value=0, on_press=self.onChange))
-		self.add_widget(Button(text="2-Chrome", value=1, on_press=self.onChange))
-		self.add_widget(Button(text="3-Firefox", value=2, on_press=self.onChange))
-		self.add_widget(Button(text="4-Opera", value=3, on_press=self.onChange))
+		self.add_widget(Button(text="1-Safari", on_press=self.onChange))
+		self.add_widget(Button(text="2-Chrome", on_press=self.onChange))
+		self.add_widget(Button(text="3-Firefox", on_press=self.onChange))
+		self.add_widget(Button(text="4-Opera", on_press=self.onChange))
 	def onChange(instance, value):
 		global current_browser
 		current_browser = int(value.text[0])-1
@@ -89,12 +90,8 @@ class Editor(GridLayout):
 		self.add_widget(Preview_One())
 
 #Preview for editor view
-class Preview_One(GridLayout):
-	def __init__(self, **kwargs):
-		super(Preview_One, self).__init__(**kwargs)
-		self.rows = 2
-		self.add_widget(Tabs(size_hint_y=None, height=50))
-		self.add_widget(Image(source="screenshots/" + browsers[current_browser] +".png", keep_ratio=False, allow_stretch=True))
+class Preview_One(TabbedPanel):
+	pass
 
 #Preview View
 class Preview(GridLayout):
