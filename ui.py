@@ -45,15 +45,23 @@ class Header(GridLayout):
 		self.cols = 3
 		#Space for a logo?
 		self.add_widget(Label(text="LOGO", size_hint_x=.25, height=100))
-		
+
 		self.add_widget(Button(text="Toggle Console", on_press=self.toggleConsole))
 		self.add_widget(Button(text="Toggle Mode", on_press=self.toggleMode))
 	def toggleConsole(instance, value):
-		global mode
-		mode ^= 2
+		if global_app.screen_manager.current == "Editor":
+			global_app.screen_manager.transition.direction = "left"
+			global_app.screen_manager.current = "Editor Console"
+		elif  global_app.screen_manager.current == "Preview":
+			global_app.screen_manager.transition.direction = "right"
+			global_app.screen_manager.current = "Preview Console"
+		elif global_app.screen_manager.current == "Editor Console":
+			global_app.screen_manager.transition.direction = "left"
+			global_app.screen_manager.current = "Editor"
+		elif  global_app.screen_manager.current == "Preview Console":
+			global_app.screen_manager.transition.direction = "right"
+			global_app.screen_manager.current = "Preview"
 	def toggleMode(instance, value):
-		global mode
-		mode ^= 1
 		if global_app.screen_manager.current == "Editor":
 			global_app.screen_manager.transition.direction = "left"
 			global_app.screen_manager.current = "Preview"
@@ -62,14 +70,20 @@ class Header(GridLayout):
 			global_app.screen_manager.current = "Editor"
 
 #When console mode is active, have this be the body
-class Body_Console(GridLayout):
+class Preview_Console(GridLayout):
 	def __init__(self, **kwargs):
-		super(Body_Console, self).__init__(**kwargs)
-		self.rows = 2
-		if mode == 2:
-			self.add_widget(Editor())
-		else:
-			self.add_widget(Preview())
+		super(Preview_Console, self).__init__(**kwargs)
+		self.rows = 3
+		self.add_widget(Header(size_hint_y=None, height=50))
+		self.add_widget(Preview())
+		self.add_widget(Console(size_hint_y=None, height=200))
+
+class Edit_Console(GridLayout):
+	def __init__(self, **kwargs):
+		super(Edit_Console, self).__init__(**kwargs)
+		self.rows = 3
+		self.add_widget(Header(size_hint_y=None, height=50))
+		self.add_widget(Editor())
 		self.add_widget(Console(size_hint_y=None, height=200))
 
 #The view for console
@@ -119,7 +133,7 @@ class Preview(GridLayout):
 class MyApp(App):
 	def build(self):
 		self.screen_manager = ScreenManager()
-		
+
 		self.editor_page = EditorPage()
 		screen = Screen(name="Editor")
 		screen.add_widget(self.editor_page)
@@ -130,9 +144,19 @@ class MyApp(App):
 		screen.add_widget(self.preview_page)
 		self.screen_manager.add_widget(screen)
 
+		self.preview_console = Preview_Console()
+		screen = Screen(name="Preview Console")
+		screen.add_widget(self.preview_console)
+		self.screen_manager.add_widget(screen)
+
+		self.preview_console = Edit_Console()
+		screen = Screen(name="Editor Console")
+		screen.add_widget(self.preview_console)
+		self.screen_manager.add_widget(screen)
+
 		return self.screen_manager
 
 if __name__ == '__main__':
-	global global_app 
+	global global_app
 	global_app = MyApp()
 	global_app.run()
