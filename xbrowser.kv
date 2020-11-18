@@ -43,8 +43,23 @@ WindowManager:
 				rescale_with_parent: True
 				min_size: 0
 				max_size: 10000
-				TextInput:
-					text: "Hello, World!"
+				GridLayout:
+					cols: 2
+					Splitter:
+						sizable_from: 'right'
+						keep_within_parent: True
+						rescale_with_parent: True
+						min_size: 5
+						max_size: 10000
+						GridLayout:
+							rows: 2
+							TextInput:
+								text: "Path"
+							Button:
+								text: "Choose path"
+								font_size: "30sp"				
+					TextInput:
+						text: "Hello World"
 			# Editor Preview Window
 			GridLayout:
 				rows: 2
