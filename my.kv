@@ -1,30 +1,137 @@
-<Preview_One>:
+WindowManager:
+	EditorPage:
+	PreviewPage:
 
-	do_default_tab: False
+<HomePage>:
+	name: "Home"
 
-    TabbedPanelItem:
-        text: 'Safari'
-        Image:
-			source:"screenshots/Safari.png"
-			keep_ratio:False
-			allow_stretch:True
-    TabbedPanelItem:
-        text: 'Chrome'
-        Image:
-			source:"screenshots/Chrome.png"
-			keep_ratio:False
-			allow_stretch:True
-    TabbedPanelItem:
-        text: 'Firefox'
-		Image:
-			source:"screenshots/Firefox.png"
-			keep_ratio:False
-			allow_stretch:True
-	TabbedPanelItem:
-        text: 'Opera'
-		Image:
-			source:"screenshots/Opera.png"
-			keep_ratio:False
-			allow_stretch:True
-</Preview_One>
-        
+	GridLayout:
+		cols: 0
+		rows: 2
+		
+		Label:
+			text: "Logo"
+			size_hint_y: None
+			height: 100
+			
+		GridLayout:
+			cols: 2
+			Button:
+				text: "Open New File"
+				font_size: "30sp"
+				on_release:
+					app.root.current = "Editor"
+			Button:
+				text: "Upload a File"
+				font_size: "30sp"
+				on_release:
+					app.root.current = "Editor"
+
+<EditorPage>:
+	name: "Editor"
+
+	BoxLayout:
+		orientation: 'vertical'
+
+		Header:
+		# Editor text input and preview windows
+		GridLayout:
+			cols: 2
+			Splitter:
+				sizable_from: 'right'
+				keep_within_parent: True
+				rescale_with_parent: True
+				min_size: 0
+				max_size: 10000
+				TextInput:
+					text: "Hello, World!"
+			# Editor Preview Window
+			GridLayout:
+				rows: 2
+				TabbedPanel:
+					do_default_tab: False
+					TabbedPanelItem:
+						text: 'Safari'
+						Image:
+							source:"screenshots/Safari.png"
+							keep_ratio:False
+							allow_stretch:True
+					TabbedPanelItem:
+						text: 'Chrome'
+						Image:
+							source:"screenshots/Chrome.png"
+							keep_ratio:False
+							allow_stretch:True
+					TabbedPanelItem:
+						text: 'Firefox'
+						Image:
+							source:"screenshots/Firefox.png"
+							keep_ratio:False
+							allow_stretch:True
+					TabbedPanelItem:
+						text: 'Opera'
+						Image:
+							source:"screenshots/Opera.png"
+							keep_ratio:False
+							allow_stretch:True
+				Splitter:
+					sizable_from: 'top'
+					keep_within_parent: True
+					rescale_with_parent: True
+					min_size: 0
+					max_size: 10000
+					Label:
+						text: "Browser Console"
+
+<PreviewPage>:
+	name: "Preview"
+
+	BoxLayout:
+		orientation: 'vertical'
+
+		Header:
+		# Browsers in a 2x2 grid
+		GridLayout:
+			rows: 2
+			cols: 2
+			Image:
+				source: "screenshots/Safari.png"
+				keep_ratio: False
+				allow_stretch: True
+			Image:
+				source: "screenshots/Chrome.png"
+				keep_ratio: False
+				allow_stretch: True
+			Image:
+				source: "screenshots/Firefox.png"
+				keep_ratio: False
+				allow_stretch: True
+			Image:
+				source: "screenshots/Opera.png"
+				keep_ratio: False
+				allow_stretch: True
+		Splitter:
+			sizable_from: 'top'
+			keep_within_parent: True
+			rescale_with_parent: True
+			min_size: 0
+			max_size: 10000
+			Label:
+				text: "Browser Console"
+
+<Header>:
+	cols: 3
+	size_hint_y: None
+	height: 50
+
+	Label:
+		text: "Logo"
+		size_hint_x: None
+		width: 100
+	Label:
+	Button:
+		text: "Toggle Mode"
+		size_hint_x: None
+		width: 200
+		on_release:
+			app.toggleMode()
