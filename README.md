@@ -5,8 +5,8 @@ Cross-Browser web development tool.
 1. Ensure you have python3 downloaded:
 	* type ‘python3 --version’ or ‘python --version’ in terminal. It should reply with a version number 3.*.*
 	* if you get an error or don’t have version 3+ follow these instructions
-		https://realpython.com/installing-python
-        NOTE: We encountered issues when using a python version newer than 3.7 
+		* https://realpython.com/installing-python
+        * NOTE: We encountered issues when using a python version newer than 3.7 
 2. Download Kivy (dependency for this prototype) :
 	* [Windows Installation](https://kivy.org/doc/stable/installation/installation-windows.html)
 	* [OS X Installation](https://kivy.org/doc/stable/installation/installation-osx.html)
