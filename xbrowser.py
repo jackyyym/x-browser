@@ -35,7 +35,7 @@ class PreviewPage(Screen):
 class Header(GridLayout):
 	pass
 
-class MyApp(App):
+class XBrowserApp(App):
 	def build(self):
 
 		# Define all the screens that can be navigated to
@@ -71,5 +71,5 @@ class MyApp(App):
 
 if __name__ == '__main__':
 	global global_app
-	global_app = MyApp()
+	global_app = XBrowserApp()
 	global_app.run()
