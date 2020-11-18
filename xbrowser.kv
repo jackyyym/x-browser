@@ -8,12 +8,12 @@ WindowManager:
 	GridLayout:
 		cols: 0
 		rows: 2
-		
+
 		Label:
 			text: "Logo"
 			size_hint_y: None
 			height: 100
-			
+
 		GridLayout:
 			cols: 2
 			Button:
@@ -47,17 +47,11 @@ WindowManager:
 					cols: 2
 					Splitter:
 						sizable_from: 'right'
-						keep_within_parent: True
-						rescale_with_parent: True
-						min_size: 5
-						max_size: 10000
-						GridLayout:
-							rows: 2
-							TextInput:
-								text: "Path"
-							Button:
-								text: "Choose path"
-								font_size: "30sp"				
+						min_size:0
+						Image:
+							source:"screenshots/dir.png"
+							keep_ratio:False
+							allow_stretch:True
 					TextInput:
 						text: "Hello World"
 			# Editor Preview Window
@@ -135,7 +129,7 @@ WindowManager:
 				text: "Browser Console"
 
 <Header>:
-	cols: 3
+	cols: 5
 	size_hint_y: None
 	height: 50
 
@@ -144,6 +138,19 @@ WindowManager:
 		size_hint_x: None
 		width: 100
 	Label:
+	Button:
+		text: "Refresh"
+		size_hint_x: None
+		width: 100
+		on_release:
+			print("Preview refreshing...")
+	Button:
+		text: "Save"
+		size_hint_x: None
+		width: 100
+		on_release:
+			print("Writing to file...")
+			print("Preview refreshing...")
 	Button:
 		text: "Toggle Mode"
 		size_hint_x: None
