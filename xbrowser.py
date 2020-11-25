@@ -9,8 +9,8 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.splitter import Splitter
 from kivy.config import Config
-from kivy.properties import NumericProperty
 
 Config.set('graphics', 'resizable', True) 
 
@@ -33,6 +33,11 @@ class PreviewPage(Screen):
 # Header which is visible in both pages
 # TODO: have header be independant from window manager
 class Header(GridLayout):
+	pass
+
+class SplitterRight(Splitter):
+	pass
+class SplitterTop(Splitter):
 	pass
 
 class XBrowserApp(App):
