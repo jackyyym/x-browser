@@ -29,6 +29,8 @@ WindowManager:
 
 <EditorPage>:
 	name: "Editor"
+	filechooser: "filechooser"
+	text_input: "text_input"
 
 	BoxLayout:
 		orientation: 'vertical'
@@ -46,6 +48,7 @@ WindowManager:
 							id: filechooser
 							path: "example_website/"
 					TextInput:
+						id: text_input
 						text: "Hello World"
 			# Editor Preview Window
 			GridLayout:
@@ -133,6 +136,7 @@ WindowManager:
 		width: 100
 		on_release:
 			print("Writing to file...")
+			root.save(root.EditorPage.filechooser.path, EditorPage.text_input.text)
 			print("Preview refreshing...")
 	Button:
 		text: "Toggle Mode"

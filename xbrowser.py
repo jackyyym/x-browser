@@ -11,6 +11,9 @@ from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.splitter import Splitter
 from kivy.config import Config
+from kivy.properties import ObjectProperty
+
+import os
 
 Config.set('graphics', 'resizable', True) 
 
@@ -26,14 +29,21 @@ class HomePage(Screen):
 
 # Both views, each with a header
 class EditorPage(Screen):
-	pass
+	filechooser = ObjectProperty(None)
+	text_input = ObjectProperty(None)
+
+		
+	
 class PreviewPage(Screen):
 	pass
 
 # Header which is visible in both pages
 # TODO: have header be independant from window manager
 class Header(GridLayout):
-	pass
+	def save(self):
+		with open(os.path.join(EditorPage.filechooser.path, EditorPage), 'w') as stream:
+			stream.write(self.text_input.text)
+	
 
 class SplitterRight(Splitter):
 	pass
