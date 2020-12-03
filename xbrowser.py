@@ -1,4 +1,5 @@
 import kivy
+import webview
 kivy.require('1.8.0')
 
 from kivy.app import App
@@ -11,8 +12,9 @@ from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.splitter import Splitter
 from kivy.config import Config
+from multiprocessing import Process
 
-Config.set('graphics', 'resizable', True) 
+Config.set('graphics', 'resizable', True)
 
 global global_app
 
@@ -33,6 +35,12 @@ class PreviewPage(Screen):
 # Header which is visible in both pages
 # TODO: have header be independant from window manager
 class Header(GridLayout):
+	def __init__(self, **kwargs):
+		super(Header, self).__init__(**kwargs)
+
+	def generateBrowser(self):
+		webview.create_window('Browser Preview', 'Site/index.html')
+		webview.start(debug=True)
 	pass
 
 class SplitterRight(Splitter):
@@ -65,7 +73,7 @@ class XBrowserApp(App):
 
 	# Define app methods
 	# def toggleConsole(self):
-		
+
 	def toggleMode(instance):
 		if global_app.screen_manager.current == "Editor":
 			global_app.screen_manager.transition.direction = "left"
@@ -78,3 +86,38 @@ if __name__ == '__main__':
 	global global_app
 	global_app = XBrowserApp()
 	global_app.run()
+
+
+
+	"""			GridLayout:
+					rows: 2
+					TabbedPanel:
+						do_default_tab: False
+						TabbedPanelItem:
+							text: 'Safari'
+							Image:
+								source:"screenshots/Safari.png"
+								keep_ratio:False
+								allow_stretch:True
+						TabbedPanelItem:
+							text: 'Chrome'
+							Image:
+								source:"screenshots/Chrome.png"
+								keep_ratio:False
+								allow_stretch:True
+						TabbedPanelItem:
+							text: 'Firefox'
+							Image:
+								source:"screenshots/Firefox.png"
+								keep_ratio:False
+								allow_stretch:True
+						TabbedPanelItem:
+							text: 'Opera'
+							Image:
+								source:"screenshots/Opera.png"
+								keep_ratio:False
+								allow_stretch:True
+					SplitterTop:
+						Label:
+							text: "Browser Console"
+	"""
