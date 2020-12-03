@@ -11,6 +11,8 @@ from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.splitter import Splitter
 from kivy.config import Config
+from kivy.properties import ObjectProperty
+from kivy.uix.popup import Popup
 
 Config.set('graphics', 'resizable', True) 
 
@@ -22,7 +24,24 @@ class WindowManager(ScreenManager):
 
 # Home page, where user can open project or create new
 class HomePage(Screen):
-	pass
+	def dismiss_popup(self):
+		self._popup.dismiss()
+
+	def show_load(self):
+		content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
+		self._popup = Popup(title="Load file", content=content, size_hint=(0.9, 0.9))
+		self._popup.open()
+
+	def load(self, path, filename):
+		with open(os.path.join(path, filename[0])) as stream:
+			self.text_input.text = stream.read()
+
+		self.dismiss_popup()
+	
+# load file popup
+class LoadDialog(GridLayout):
+    load = ObjectProperty(None)
+    cancel = ObjectProperty(None)
 
 # Both views, each with a header
 class EditorPage(Screen):

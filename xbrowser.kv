@@ -20,6 +20,7 @@ WindowManager:
 				text: "Open New File"
 				font_size: "30sp"
 				on_release:
+					root.show_load()
 					app.root.current = "Editor"
 			Button:
 				text: "Upload a File"
@@ -155,3 +156,22 @@ WindowManager:
 	rescale_with_parent: True
 	min_size: 0
 	max_size: 10000
+
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)
