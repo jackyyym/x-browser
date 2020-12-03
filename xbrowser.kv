@@ -30,6 +30,7 @@ WindowManager:
 
 <EditorPage>:
 	name: "Editor"
+	text_input: text_input
 
 	BoxLayout:
 		orientation: 'vertical'
@@ -47,6 +48,7 @@ WindowManager:
 							id: filechooser
 							path: "example_website/"
 					TextInput:
+						id: text_input
 						text: "Hello World"
 			# Editor Preview Window
 			GridLayout:
@@ -164,6 +166,7 @@ WindowManager:
         orientation: "vertical"
         FileChooserListView:
             id: filechooser
+			path: "example_website/"
 
         BoxLayout:
             size_hint_y: None

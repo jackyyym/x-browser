@@ -14,6 +14,8 @@ from kivy.config import Config
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 
+import os
+
 Config.set('graphics', 'resizable', True) 
 
 global global_app
@@ -34,7 +36,7 @@ class HomePage(Screen):
 
 	def load(self, path, filename):
 		with open(os.path.join(path, filename[0])) as stream:
-			self.text_input.text = stream.read()
+			EditorPage.text_input.text = stream.read()
 
 		self.dismiss_popup()
 	
@@ -45,7 +47,8 @@ class LoadDialog(GridLayout):
 
 # Both views, each with a header
 class EditorPage(Screen):
-	pass
+	text_input = ObjectProperty(None)
+
 class PreviewPage(Screen):
 	pass
 
