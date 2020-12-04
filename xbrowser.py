@@ -35,8 +35,12 @@ class HomePage(Screen):
 		self._popup.open()
 
 	def load(self, path, filename):
+		print("Opened File: " + os.path.join(path, filename[0]))
+		print( dir(App.get_running_app().root))
+		print("Text input: " + App.get_running_app().root.EditorPage.text_input.text)
 		with open(os.path.join(path, filename[0])) as stream:
-			EditorPage.text_input.text = stream.read()
+			
+			EditorPage.text_input = stream.read()
 
 		self.dismiss_popup()
 	
