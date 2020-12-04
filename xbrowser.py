@@ -13,10 +13,15 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.splitter import Splitter
 from kivy.config import Config
 from multiprocessing import Process
+from kivy.properties import StringProperty
+
+import os
 
 Config.set('graphics', 'resizable', True)
 
 global global_app
+global curr_file
+curr_file = "AAAAAAAAAAAAA"
 
 # This class manages both the Editor and Preview Pages
 class WindowManager(ScreenManager):
@@ -28,6 +33,7 @@ class HomePage(Screen):
 
 # Both views, each with a header
 class EditorPage(Screen):
+	# editor = StringProperty(None)
 	pass
 class PreviewPage(Screen):
 	pass
@@ -39,8 +45,13 @@ class Header(GridLayout):
 		super(Header, self).__init__(**kwargs)
 
 	def generateBrowser(self):
-		webview.create_window('Browser Preview', 'Site/index.html')
-		webview.start(debug=True)
+		# Check if current file is an .html file
+		global curr_file
+		if (curr_file[-5:] == ".html"):
+			webview.create_window('Browser Preview', os.path.relpath(curr_file, "./"))
+			webview.start(debug=True)
+		else:
+			print("Please Select an HTML File!")
 	pass
 
 class SplitterRight(Splitter):
@@ -82,42 +93,17 @@ class XBrowserApp(App):
 			global_app.screen_manager.transition.direction = "right"
 			global_app.screen_manager.current = "Editor"
 
+	def chooseFile(instance, selection, editor_text):
+		if selection[0]: # returns true if selection exists, thus selection[0] is a file
+			try:
+				with open (selection[0], 'r') as f:
+					editor_text.text = f.read()
+				global curr_file
+				curr_file = selection[0]
+			except:
+				print("Please Select a Text File")
+
 if __name__ == '__main__':
 	global global_app
 	global_app = XBrowserApp()
 	global_app.run()
-
-
-
-	"""			GridLayout:
-					rows: 2
-					TabbedPanel:
-						do_default_tab: False
-						TabbedPanelItem:
-							text: 'Safari'
-							Image:
-								source:"screenshots/Safari.png"
-								keep_ratio:False
-								allow_stretch:True
-						TabbedPanelItem:
-							text: 'Chrome'
-							Image:
-								source:"screenshots/Chrome.png"
-								keep_ratio:False
-								allow_stretch:True
-						TabbedPanelItem:
-							text: 'Firefox'
-							Image:
-								source:"screenshots/Firefox.png"
-								keep_ratio:False
-								allow_stretch:True
-						TabbedPanelItem:
-							text: 'Opera'
-							Image:
-								source:"screenshots/Opera.png"
-								keep_ratio:False
-								allow_stretch:True
-					SplitterTop:
-						Label:
-							text: "Browser Console"
-	"""
