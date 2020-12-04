@@ -109,7 +109,8 @@ class XBrowserApp(App):
 	def chooseFile(instance,path, selection):
 		if selection[0]: # returns true if selection exists, thus selection[0] is a file
 			try:
-				with open(os.path.join(path, filename[0])) as stream:
+				print("Opened File: " + os.path.join(path, selection[0]))
+				with open(os.path.join(path, selection[0]), 'r') as stream:
 			
 					self.editor_page.editor.text = stream.read()
 				global curr_file
@@ -118,10 +119,10 @@ class XBrowserApp(App):
 				print("Please Select a Text File")
 	
 	def load(self, path, filename):
-		print("Opened File: " + os.path.join(path, filename[0]))
+		
 		# print( dir(App.get_running_app().root))
 		# print("Text input: " + self.editor_page.editor.text)
-		
+		self.chooseFile(path = path, selection = filename)
 		
 		# self.chooseFile()
 
