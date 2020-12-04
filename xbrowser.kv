@@ -44,7 +44,7 @@ WindowManager:
 					id: filechooser
 					path: "./"
 					on_submit:
-						app.chooseFile(selection=filechooser.selection)
+						app.chooseFile(selection=filechooser.selection, editor_text = editor)
 			TextInput:
 				background_color: [30, 30, 30, 1]
 				hint_text_color: [208, 212, 212, 1]

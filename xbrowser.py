@@ -106,7 +106,7 @@ class XBrowserApp(App):
 			global_app.screen_manager.transition.direction = "right"
 			global_app.screen_manager.current = "Editor"
 
-	def chooseFile(instance,path, selection):
+	def chooseFile(instance, selection, editor_text ):
 		if selection[0]: # returns true if selection exists, thus selection[0] is a file
 			try:
 				with open (selection[0], 'r') as f:
