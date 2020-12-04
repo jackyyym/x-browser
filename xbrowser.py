@@ -106,11 +106,12 @@ class XBrowserApp(App):
 			global_app.screen_manager.transition.direction = "right"
 			global_app.screen_manager.current = "Editor"
 
-	def chooseFile(instance, selection, editor_text ):
+	def chooseFile(instance,path, selection):
 		if selection[0]: # returns true if selection exists, thus selection[0] is a file
 			try:
-				with open (selection[0], 'r') as f:
-					editor_text.text = f.read()
+				with open(os.path.join(path, filename[0])) as stream:
+			
+					self.editor_page.editor.text = stream.read()
 				global curr_file
 				curr_file = selection[0]
 			except:
@@ -120,9 +121,7 @@ class XBrowserApp(App):
 		print("Opened File: " + os.path.join(path, filename[0]))
 		# print( dir(App.get_running_app().root))
 		# print("Text input: " + self.editor_page.editor.text)
-		with open(os.path.join(path, filename[0])) as stream:
-			
-			self.editor_page.editor.text = stream.read()
+		
 		
 		# self.chooseFile()
 
