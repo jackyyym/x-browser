@@ -42,11 +42,13 @@ WindowManager:
 				# TODO: load path from directory
 				FileChooserListView:
 					id: filechooser
-					path: "example_website/"
+					path: ".\\example_website\\"
 					on_submit:
 						app.chooseFile(selection=filechooser.selection)
 			TextInput:
 				id: editor
+				background_color: (30/255., 30/255., 30/255., 1)
+				foreground_color: (212/255., 210/255., 208/255., 1)
 				text: "Select a Text File to get Started"
 
 <PreviewPage>:
