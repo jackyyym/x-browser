@@ -40,48 +40,17 @@ WindowManager:
 		GridLayout:
 			cols: 2
 			SplitterRight:
-				GridLayout:
-					cols: 2
-					SplitterRight:
-						# TODO: load path from directory
-						FileChooserListView:
-							id: filechooser
-							path: "example_website/"
-					TextInput:
-						id: text_input
-						text: "Hello World"
-			# Editor Preview Window
-			GridLayout:
-				rows: 2
-				TabbedPanel:
-					do_default_tab: False
-					TabbedPanelItem:
-						text: 'Safari'
-						Image:
-							source:"screenshots/Safari.png"
-							keep_ratio:False
-							allow_stretch:True
-					TabbedPanelItem:
-						text: 'Chrome'
-						Image:
-							source:"screenshots/Chrome.png"
-							keep_ratio:False
-							allow_stretch:True
-					TabbedPanelItem:
-						text: 'Firefox'
-						Image:
-							source:"screenshots/Firefox.png"
-							keep_ratio:False
-							allow_stretch:True
-					TabbedPanelItem:
-						text: 'Opera'
-						Image:
-							source:"screenshots/Opera.png"
-							keep_ratio:False
-							allow_stretch:True
-				SplitterTop:
-					Label:
-						text: "Browser Console"
+				# TODO: load path from directory
+				FileChooserListView:
+					id: filechooser
+					path: "./"
+					on_submit:
+						app.chooseFile(selection=filechooser.selection, editor_text=editor)
+			TextInput:
+				background_color: [30, 30, 30, 1]
+				hint_text_color: [208, 212, 212, 1]
+				id: editor
+				text: "Select a Text File to get Started"
 
 <PreviewPage>:
 	name: "Preview"
@@ -125,12 +94,6 @@ WindowManager:
 		width: 100
 	Label:
 	Button:
-		text: "Refresh"
-		size_hint_x: None
-		width: 100
-		on_release:
-			print("Preview refreshing...")
-	Button:
 		text: "Save"
 		size_hint_x: None
 		width: 100
@@ -138,13 +101,20 @@ WindowManager:
 			print("Writing to file...")
 			print("Preview refreshing...")
 	Button:
+		text: "Launch Browser"
+		size_hint_x: None
+		width: 200
+		on_release:
+			print("Preview refreshing...")
+		on_press: root.generateBrowser()
+	Button:
 		text: "Toggle Mode"
 		size_hint_x: None
 		width: 200
 		on_release:
 			app.toggleMode()
 
-<SplitterRight>: 
+<SplitterRight>:
 	sizable_from: 'right'
 	keep_within_parent: True
 	rescale_with_parent: True
