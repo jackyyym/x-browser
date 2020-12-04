@@ -15,6 +15,8 @@ from kivy.config import Config
 from kivy.uix.popup import Popup
 from multiprocessing import Process
 from kivy.properties import StringProperty
+from kivy.properties import ObjectProperty
+
 
 import os
 
@@ -28,34 +30,23 @@ curr_file = "AAAAAAAAAAAAA"
 class WindowManager(ScreenManager):
 	pass
 
+# load file popup
+class LoadDialog(GridLayout):
+    pass
+
 # Home page, where user can open project or create new
 class HomePage(Screen):
 	def dismiss_popup(self):
 		self._popup.dismiss()
 
 	def show_load(self):
-		content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
-		self._popup = Popup(title="Load file", content=content, size_hint=(0.9, 0.9))
+		self._popup = Popup(title="Load file", content=LoadDialog(), size_hint=(0.9, 0.9))
 		self._popup.open()
 
-	def load(self, path, filename):
-		print("Opened File: " + os.path.join(path, filename[0]))
-		print( dir(App.get_running_app().root))
-		print("Text input: " + App.get_running_app().root.EditorPage.text_input.text)
-		with open(os.path.join(path, filename[0])) as stream:
-			
-			EditorPage.text_input = stream.read()
-
-		self.dismiss_popup()
-	
-# load file popup
-class LoadDialog(GridLayout):
-    load = ObjectProperty(None)
-    cancel = ObjectProperty(None)
 
 # Both views, each with a header
 class EditorPage(Screen):
-	# editor = StringProperty(None)
+	editor = ObjectProperty(None)
 	pass
 class PreviewPage(Screen):
 	pass
@@ -115,7 +106,7 @@ class XBrowserApp(App):
 			global_app.screen_manager.transition.direction = "right"
 			global_app.screen_manager.current = "Editor"
 
-	def chooseFile(instance, selection, editor_text):
+	def chooseFile(instance,path, selection):
 		if selection[0]: # returns true if selection exists, thus selection[0] is a file
 			try:
 				with open (selection[0], 'r') as f:
@@ -124,6 +115,18 @@ class XBrowserApp(App):
 				curr_file = selection[0]
 			except:
 				print("Please Select a Text File")
+	
+	def load(self, path, filename):
+		print("Opened File: " + os.path.join(path, filename[0]))
+		# print( dir(App.get_running_app().root))
+		# print("Text input: " + self.editor_page.editor.text)
+		with open(os.path.join(path, filename[0])) as stream:
+			
+			self.editor_page.editor.text = stream.read()
+		
+		# self.chooseFile()
+
+		self.home_page.dismiss_popup()
 
 if __name__ == '__main__':
 	global global_app
