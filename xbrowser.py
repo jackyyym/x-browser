@@ -106,7 +106,7 @@ class XBrowserApp(App):
 			global_app.screen_manager.transition.direction = "right"
 			global_app.screen_manager.current = "Editor"
 
-	def chooseFile(instance,path, selection):
+	def chooseFile(instance, selection):
 		if selection[0]: # returns true if selection exists, thus selection[0] is a file
 			try:
 				print("Opened File: " + os.path.join(path, selection[0]))
@@ -118,11 +118,11 @@ class XBrowserApp(App):
 			except:
 				print("Please Select a Text File")
 	
-	def load(self, path, filename):
+	def load(self, filename):
 		
 		# print( dir(App.get_running_app().root))
 		# print("Text input: " + self.editor_page.editor.text)
-		self.chooseFile(path = path, selection = filename)
+		self.chooseFile( selection = filename)
 		
 		# self.chooseFile()
 
