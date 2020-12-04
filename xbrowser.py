@@ -14,16 +14,15 @@ from kivy.uix.splitter import Splitter
 from kivy.config import Config
 from kivy.uix.popup import Popup
 from multiprocessing import Process
-from kivy.properties import StringProperty
-from kivy.properties import ObjectProperty
-
 
 import os
+from os.path import join, isdir
 
 Config.set('graphics', 'resizable', True)
 
 global global_app
 global curr_file
+global ep_id
 curr_file = "AAAAAAAAAAAAA"
 
 # This class manages both the Editor and Preview Pages
@@ -32,7 +31,10 @@ class WindowManager(ScreenManager):
 
 # load file popup
 class LoadDialog(GridLayout):
-    pass
+	def is_dir(self, directory, filename):
+		return isdir(join(directory, filename))
+	
+	pass
 
 # Home page, where user can open project or create new
 class HomePage(Screen):
@@ -46,7 +48,11 @@ class HomePage(Screen):
 
 # Both views, each with a header
 class EditorPage(Screen):
-	editor = ObjectProperty(None)
+	def __init__(self, **kwargs):
+		super(EditorPage, self).__init__(**kwargs)
+		global ep_id
+		ep_id = self.ids
+
 	pass
 class PreviewPage(Screen):
 	pass
@@ -96,8 +102,6 @@ class XBrowserApp(App):
 		return self.screen_manager
 
 	# Define app methods
-	# def toggleConsole(self):
-
 	def toggleMode(instance):
 		if global_app.screen_manager.current == "Editor":
 			global_app.screen_manager.transition.direction = "left"
@@ -109,22 +113,18 @@ class XBrowserApp(App):
 	def chooseFile(instance, selection):
 		if selection[0]: # returns true if selection exists, thus selection[0] is a file
 			try:
-				print("Opened File: " + os.path.join(path, selection[0]))
-				with open(os.path.join(path, selection[0]), 'r') as stream:
-			
-					self.editor_page.editor.text = stream.read()
+				global ep_id
+				with open (selection[0], 'r') as f:
+					ep_id.editor.text = f.read()
 				global curr_file
 				curr_file = selection[0]
 			except:
-				print("Please Select a Text File")
+				print("Please select a text file.")
+				
 	
-	def load(self, filename):
-		
-		# print( dir(App.get_running_app().root))
-		# print("Text input: " + self.editor_page.editor.text)
-		self.chooseFile( selection = filename)
-		
-		# self.chooseFile()
+	def loadDirectory(self, selection):
+		ep_id.filechooser.path = selection[0]
+		global_app.screen_manager.current = "Editor"
 
 		self.home_page.dismiss_popup()
 

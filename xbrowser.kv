@@ -17,20 +17,20 @@ WindowManager:
 		GridLayout:
 			cols: 2
 			Button:
-				text: "Open New File"
+				text: "Open Existing Project"
 				font_size: "30sp"
 				on_release:
 					root.show_load()
-					app.root.current = "Editor"
 			Button:
-				text: "Upload a File"
+				text: "New Project"
 				font_size: "30sp"
 				on_release:
 					app.root.current = "Editor"
 
+
 <EditorPage>:
 	name: "Editor"
-	editor: editor
+
 	BoxLayout:
 		orientation: 'vertical'
 
@@ -42,12 +42,10 @@ WindowManager:
 				# TODO: load path from directory
 				FileChooserListView:
 					id: filechooser
-					path: "./"
+					path: "example_website/"
 					on_submit:
-						app.chooseFile(path = filechooser.path,selection=filechooser.selection)
+						app.chooseFile(selection=filechooser.selection)
 			TextInput:
-				background_color: [30, 30, 30, 1]
-				hint_text_color: [208, 212, 212, 1]
 				id: editor
 				text: "Select a Text File to get Started"
 
@@ -129,13 +127,14 @@ WindowManager:
 	max_size: 10000
 
 <LoadDialog>:
-    BoxLayout:
-        size: root.size
-        pos: root.pos
-        orientation: "vertical"
-        FileChooserListView:
-            id: filechooser
-			path: "example_website/"
-			on_submit:app.load(filechooser.path, filechooser.selection) 
+	BoxLayout:
+		size: root.size
+		pos: root.pos
+		orientation: "vertical"
+		FileChooserListView:
+			id: filechooser
+			path: "./"
+			dirselect: True
+			on_submit:app.loadDirectory(filechooser.selection) 
 
 
