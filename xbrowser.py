@@ -127,6 +127,11 @@ class XBrowserApp(App):
 		global_app.screen_manager.current = "Editor"
 
 		self.home_page.dismiss_popup()
+	
+	def saveFile(instance):
+		global curr_file
+		with open(curr_file, 'w') as stream:
+			stream.write(ep_id.editor.text)
 
 if __name__ == '__main__':
 	global global_app
