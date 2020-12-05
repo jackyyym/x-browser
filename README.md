@@ -11,6 +11,8 @@ Cross-Browser web development tool.
 	* [Windows Installation](https://kivy.org/doc/stable/installation/installation-windows.html)
 	* [OS X Installation](https://kivy.org/doc/stable/installation/installation-osx.html)
 	* [Linux Installation](https://kivy.org/doc/stable/installation/installation-linux.html)
+3. Install pywebview:
+	* pip install pywebview
 4. Run the program:
 	* Download the source code here
 	* https://github.com/jackyyym/x-browser
@@ -18,3 +20,7 @@ Cross-Browser web development tool.
 	* run ‘python3 xbrowser.py’
 5. Exit the program:
 	* Simply close the window
+
+# To Build Executable for Windows:
+* Follow instructions [here](https://kivy.org/doc/stable/guide/packaging-windows.html)
+	* However, when building the exectuible add the flag '--hidden-import win32timezone'

@@ -111,27 +111,27 @@ class XBrowserApp(App):
 			global_app.screen_manager.current = "Editor"
 
 	def chooseFile(instance, selection):
-		if selection[0]: # returns true if selection exists, thus selection[0] is a file
-			try:
+		try:
+			if selection[0]: # returns true if selection exists, thus selection[0] is a file
 				global ep_id
 				with open (selection[0], 'r') as f:
 					ep_id.editor.text = f.read()
 				global curr_file
 				curr_file = selection[0]
-			except:
-				print("Please select a text file.")
-				
+		except:
+			print("Please select a text file.")
+		
 	
-	def loadDirectory(self, selection):
-		ep_id.filechooser.path = selection[0]
+	def load(self, path, filename):
+		print("Opened File: " + os.path.join(path, filename[0]))
+		with open(os.path.join(path,)) as stream:
+			global ep_id
+			ep_id.editor.text = stream.read()
+		ep_id.filechooser.path = "./"
+		print ("Path: " + path)
 		global_app.screen_manager.current = "Editor"
 
 		self.home_page.dismiss_popup()
-	
-	def saveFile(instance):
-		global curr_file
-		with open(curr_file, 'w') as stream:
-			stream.write(ep_id.editor.text)
 
 if __name__ == '__main__':
 	global global_app
